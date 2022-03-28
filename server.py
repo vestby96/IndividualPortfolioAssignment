@@ -3,7 +3,7 @@ import threading
 
 # defining global constants
 HOST = '127.0.0.1'
-PORT = 55555
+PORT = 5555
 ADDR = (HOST, PORT)
 BUFF = 1024
 ENC = 'utf-8'
@@ -66,8 +66,10 @@ def send():
         
         # /kick command
         elif msg.startswith("/kick"):
+            # gets all the names of the clients that will be kicked
             kicknames = [string for string in names if string in msg]
             for kickname in kicknames:
+                # uses the index of the name to get the corresponding client info and uses the quit function to remove the client
                 index = names.index(kickname)
                 c = clients[index]
                 quit(c)
@@ -143,6 +145,6 @@ th2 = threading.Thread(target=send)
 th2.start()
 
 # starting the listen fuction to allow connections
-print("SERVER IS LISTENING...\nTo see all clients type '/clients'")
+print(f"SERVER IS LISTENING ON {ADDR}\nTo see all clients type '/clients'")
 # running the start function
 start()
