@@ -1,0 +1,2 @@
+# IndividualPortfolioAssignment
+DATA2400 Individual Portfolio Assignment
