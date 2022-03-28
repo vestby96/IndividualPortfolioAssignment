@@ -9,12 +9,11 @@ ADDR = (HOST, PORT)
 BUFF = 1024
 ENC = 'utf-8'
 
-# creating the socket and connecting it with the set address
+# creating the socket and connecting it with the address
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(ADDR)
 
-#----------------------------------------------------------------------------------
-#choosing a random name for the bot
+# random name for the bot
 name = random.choice(["Joakim", "Josefine", "Jostein","Vetle", "Viktor", "Victoria","Sofie", "Sindre", "Stein","Erlend", "Eva", "Elvira"])
 
 def bot(msg):
@@ -23,7 +22,7 @@ def bot(msg):
     # bot 1
     if name == "Joakim" or name == "Josefine" or name == "Jostein":
         # pretty easy to add more responses like these
-        if msg == "Hi" or msg == "Hello" or msg == "hi" or msg == "hello":
+        if msg == "HOST : Hi" or msg == "HOST : Hello" or msg == "HOST : hi" or msg == "HOST : hello":
             return "Hi!"
         
         # set lists og actions that the bot want and don't want to do
@@ -48,7 +47,7 @@ def bot(msg):
 
     # bot 2
     elif name == "Vetle" or name == "Viktor" or name == "Victoria":
-        if msg == "Hi" or msg == "Hello" or msg == "hi" or msg == "hello":
+        if msg == "HOST : Hi" or msg == "HOST : Hello" or msg == "HOST : hi" or msg == "HOST : hello":
             return "Hi!"
         
         # this bot has a different ide of want is fun
@@ -66,7 +65,7 @@ def bot(msg):
     # bot 3
     elif name == "Sofie" or name == "Sindre" or name == "Stein":
 
-        if msg == "Hi" or msg == "Hello" or msg == "hi" or msg == "hello":
+        if msg == "HOST : Hi" or msg == "HOST : Hello" or msg == "HOST : hi" or msg == "HOST : hello":
             return "Hi!"
         
         yes_things = ["sing", "hug", "play", "work"]
@@ -84,7 +83,7 @@ def bot(msg):
         
     # bot 4
     else:
-        if msg == "Hi" or msg == "Hello" or msg == "hi" or msg == "hello":
+        if msg == "HOST : Hi" or msg == "HOST : Hello" or msg == "HOST : hi" or msg == "HOST : hello":
             return "Hello!"
         
         things = ["sing", "hug", "play", "work", "fight", "bicker", "yell", "complain"]
@@ -94,7 +93,6 @@ def bot(msg):
         if action:
             return f"I think {action[0]}ing sounds great!"
         return "That sounds good."
-#----------------------------------------------------------------------------------
 
 # function that sends input, mainly used to disconnect clients
 def send():
@@ -106,7 +104,6 @@ def send():
             if msg == f"{name} : quit":
                 s.send(msg.encode(ENC))
                 break
-
             else:
                 s.send(msg.encode(ENC))
         except:
