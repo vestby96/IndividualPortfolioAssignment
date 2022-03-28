@@ -22,18 +22,28 @@ def bot(msg):
 
     # bot 1
     if name == "Joakim" or name == "Josefine" or name == "Jostein":
+        # pretty easy to add more responses like these
         if msg == "Hi" or msg == "Hello" or msg == "hi" or msg == "hello":
             return "Hi!"
         
+        # set lists og actions that the bot want and don't want to do
+        # very easy to just add more actions in these lists to get the bot to respond to more
         yes_things = ["sing", "hug", "play", "work"]
         no_things = ["fight", "bicker", "yell", "complain", "cry"]
+
+        # extracting the suggested action from the received message in the form of a list
         yes_action = [string for string in yes_things if string in msg]
         no_action = [string for string in no_things if string in msg]
 
+        # the suggested action is in the yes_things list
         if yes_action:
             return f"I'm down for some {yes_action[0]}ing."
+        
+        # the action is in no_things list
         elif no_action:
             return f"What? I don't want to {no_action[0]}."
+        
+        # does not find any action
         return "I don't care!"
 
     # bot 2
@@ -41,6 +51,7 @@ def bot(msg):
         if msg == "Hi" or msg == "Hello" or msg == "hi" or msg == "hello":
             return "Hi!"
         
+        # this bot has a different ide of want is fun
         yes_things = ["fight", "bicker", "yell", "complain", "cry"]
         no_things = ["sing", "hug", "play", "work"]
         yes_action = [string for string in yes_things if string in msg]
@@ -66,6 +77,7 @@ def bot(msg):
         if yes_action:
             return f"Nah, that's exsausting."
         elif no_action:
+            # this bot can reply with a suggestion
             suggestion = random.choice(yes_things)
             return f"That no fun, what about {suggestion}ing?"
         return "I don't care."
@@ -78,6 +90,7 @@ def bot(msg):
         things = ["sing", "hug", "play", "work", "fight", "bicker", "yell", "complain"]
         action = [string for string in things if string in msg]        
 
+        # this bot agrees to any action it recognizes
         if action:
             return f"I think {action[0]}ing sounds great!"
         return "That sounds good."
