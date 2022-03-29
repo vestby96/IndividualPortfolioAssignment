@@ -1,5 +1,10 @@
 import socket
 import threading
+import argparse
+
+parser=argparse.ArgumentParser(
+    description="The server.py script can take in commandline input and send messages to the clients. The client bots will respond if they recognize an action in the message the server/host sends. Commands: '/kick [name]...' will kick clients by name, '/clients' will list all connected clients with address and name.")
+args=parser.parse_args()
 
 # defining global constants
 HOST = '127.0.0.1'
@@ -134,7 +139,7 @@ def start():
         # indicates to the host and other clients that the client has connected
         print(f"{name} JOINED")
         broadcast(c, f"{name} JOINED")
-        c.send("[CONNECTED]\nTo see all clients type '/clients'".encode(ENC))
+        c.send("[CONNECTED]".encode(ENC))
 
         # a new thread will be started that runs the run function to handle the client
         th1 = threading.Thread(target=run, args=(c,))
@@ -145,6 +150,6 @@ th2 = threading.Thread(target=send)
 th2.start()
 
 # starting the listen fuction to allow connections
-print(f"SERVER IS LISTENING ON {ADDR}\nTo see all clients type '/clients'")
+print(f"SERVER IS LISTENING ON {ADDR}")
 # running the start function
 start()

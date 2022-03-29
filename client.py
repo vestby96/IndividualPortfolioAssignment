@@ -1,6 +1,11 @@
 import socket
 import threading
 import random
+import argparse
+
+parser=argparse.ArgumentParser(
+    description="Server IP address is 127.0.0.1, and port is 5555. The script will ask you to enter IP, Port and which bot the client will use. The client.py script will take commandline input and send to all other clients like a chatroom, but the bots will only respond if the message is from the host. Commands: '/clients' will list all connected clients with address and name.")
+args=parser.parse_args()
 
 # defining global constants, using commandline input
 print("Enter IP")
