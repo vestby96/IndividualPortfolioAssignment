@@ -8,8 +8,7 @@ parser=argparse.ArgumentParser(
 args=parser.parse_args()
 
 # defining global constants using commandline input
-print("Enter the IP for the server")
-HOST = input('')
+HOST = 'localhost'
 print("Enter the Port for the server")
 PORT = int(input())
 ADDR = (HOST, PORT)
