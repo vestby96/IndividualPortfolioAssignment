@@ -1,12 +1,16 @@
 import socket
 import threading
 import argparse
+import random
+
+# used to send random message
+questions = ["What day is it today?", "Let's eat!", "What do you like to do on your spare time?"]
+actions = ["sing", "hug", "play", "work", "fight", "bicker", "yell", "complain", "cry", "run", "talk", "jogg", "code", ""]
 
 # -h description
 parser=argparse.ArgumentParser(
-    description="The server.py script can take in commandline input and send messages to the clients. The client bots will responde to all messages they receive from the server/host. Commands: '/kick [name]...' will kick clients by name, '/clients' will list all connected clients with address and name.")
+    description="The server.py script can take in commandline input and send messages to the clients. The client bots will responde to all messages they receive from the server/host. Commands: '/kick [name]...' will kick clients by name, '/clients' will list all connected clients with address and name, /random will print and send a 'random' message to to clients.")
 args=parser.parse_args()
-
 # defining global constants using commandline input
 HOST = 'localhost'
 print("Enter the Port for the server")
@@ -87,6 +91,19 @@ def send():
                 c = clients[index]
                 quit(c)
         
+        elif msg == "HOST: /random":
+            numb = random.choice([0, 1])
+            if numb == 0:
+                message = random.choice(questions)
+                print(f"{message}")
+                for c in clients:
+                    c.send(f"HOST: {message}".encode(ENC))
+            else:
+                message = random.choice(actions)
+                print(f"Would you like to {message}?")
+                for c in clients:
+                    c.send(f"HOST: Would you like to {message}?".encode(ENC))
+
         else:
             # sends message to all clients
             for c in clients:
