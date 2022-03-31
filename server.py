@@ -91,7 +91,9 @@ def send():
                 c = clients[index]
                 quit(c)
         
+        # /random command
         elif msg == "HOST: /random":
+            # choses randomly between the two lists
             numb = random.choice([0, 1])
             if numb == 0:
                 message = random.choice(questions)
