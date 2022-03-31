@@ -6,7 +6,7 @@ import argparse
 
 # -h description
 parser=argparse.ArgumentParser(
-    description="Server IP address and port is chosen by the user when the server is launched. The script will ask you to enter IP, Port and which bot the script will use. The client.py script will take commandline input and send to all other clients like a chatroom, but the bot will only respond if the message is from the host. Commands: '/names' will list all connected clients with name.")
+    description="Server IP address and port is chosen by the user when the server is launched. The script will ask you to enter IP, Port and which bot the script will use. The client.py script will take commandline input and send to all other clients like a chatroom, but the bot will only respond if the message is from the host. Commands: '/names' will list all connected clients with name, '/quit' will close the connection with the server")
 args=parser.parse_args()
 
 # defining global constants, using commandline input
@@ -222,7 +222,7 @@ def send():
             msg = f"{name}: {input()}"
 
             # the loop will break when the disconnect message is sent
-            if msg == f"{name}: quit":
+            if msg == f"{name}: /quit":
                 s.send(msg.encode(ENC))
                 break
 
@@ -275,9 +275,7 @@ def rece():
                 print(msg)
             
             # checks for the disconnect message
-            elif msg == "quit": 
-                # closes the connection
-                s.close()
+            elif msg == "/quit": 
                 break
 
             else:
