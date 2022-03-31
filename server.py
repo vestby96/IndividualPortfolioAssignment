@@ -130,8 +130,8 @@ def run(c):
             name = names[index]
 
             # checks for the disconnect message
-            if msg == f"{name}: quit":
-                c.send("quit".encode(ENC))
+            if msg == f"{name}: /quit":
+                c.send("/quit".encode(ENC))
                 quit(c)
                 break
 
