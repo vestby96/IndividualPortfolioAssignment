@@ -2,47 +2,45 @@ import socket
 import threading
 import argparse
 
+# -h description
 parser=argparse.ArgumentParser(
-    description="The server.py script can take in commandline input and send messages to the clients. The client bots will respond if they recognize an action in the message the server/host sends. Commands: '/kick [name]...' will kick clients by name, '/clients' will list all connected clients with address and name.")
+    description="The server.py script can take in commandline input and send messages to the clients. The client bots will responde to all messages they receive from the server/host. Commands: '/kick [name]...' will kick clients by name, '/clients' will list all connected clients with address and name.")
 args=parser.parse_args()
 
-# defining global constants
-HOST = '127.0.0.1'
-PORT = 5555
+# defining global constants using commandline input
+print("Enter the IP for the server")
+HOST = input('')
+print("Enter the Port for the server")
+PORT = int(input())
 ADDR = (HOST, PORT)
+print(f"ADDR: {ADDR}")
+
+# buffersize used to receive messages, encryption used to both send and receive messages
 BUFF = 1024
 ENC = 'utf-8'
 
-# creating the socket and binding it with the set address
+# creating the socket and binding it with the chosen address
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(ADDR)
 # start listening to the socket for connections
-# can add a number to the () if you want to limit the number of clients connected at once
 s.listen()
 
-# lists that wil store information about the connected clients
+# lists that will store information about the connected clients
 clients = []
 addresses = []
 names = []
 
-# lists address and name of all connected clients
-def listclients():
-    # gets the length of the clients list
-    msg = f"Number of clients: {len(clients)}"
-    for c in clients:
-        # gets the address and name of the clients and add it to the message
-        index = clients.index(c)
-        name = names[index]
-        addr = addresses[index]
-        msg += f"\n{addr} : {name}"
-    return msg
-
-# removing a client and close the related socket
+# removing a client and closeing the related socket
 def quit(c):
     try:
+        # getting the index of the c in clients list
         index = clients.index(c)
+        # removing the client from clients list
         clients.remove(c)
+        # closting the connection
         c.close()
+
+        # getting the name and address of the client
         name = names[index]
         addr = addresses[index]
 
@@ -54,23 +52,34 @@ def quit(c):
         # remove the client name and address
         names.remove(name)
         addresses.remove(addr)
+    
     except:
         # this will occurr when a client is kicked, because the quit function will run twice
-        # i found this to be the easiest and best solution
-        print("Client removed")
+        # I found this to be the easiest and best solution
+        print("CLIENT KICKED")
 
-# HOST sends a message to all clients connected
+# send message function
 def send():
     while True:
-        # checking or input message to send
-        msg = input()
+        # checking for input message to send
+        msg = f"HOST: {input()}"
 
-        # i the message is the /client command
-        if msg.startswith("/clients"):
-            print(listclients())
+        # /client command
+        if msg == "HOST: /clients":
+            # gets the length of the clients list
+            message = f"Number of clients {len(clients)}"
+            for c in clients:
+                # gets the address and name of the clients and add it to the message
+                index = clients.index(c)
+                name = names[index]
+                addr = addresses[index]
+                # adds the info to the string
+                message += f"\n{addr} {name}"
+            # prints the string with the clients
+            print(message)
         
         # /kick command
-        elif msg.startswith("/kick"):
+        elif msg.startswith("HOST: /kick"):
             # gets all the names of the clients that will be kicked
             kicknames = [string for string in names if string in msg]
             for kickname in kicknames:
@@ -78,11 +87,11 @@ def send():
                 index = names.index(kickname)
                 c = clients[index]
                 quit(c)
+        
         else:
             # sends message to all clients
-            message = "HOST : " + msg
             for c in clients:
-                c.send(message.encode(ENC))
+                c.send(msg.encode(ENC))
 
 # broadcast messages from a client to all other clients
 def broadcast(c, msg):
@@ -103,15 +112,11 @@ def run(c):
             name = names[index]
 
             # checks for the disconnect message
-            if msg == f"{name} : quit":
+            if msg == f"{name}: quit":
                 c.send("quit".encode(ENC))
                 quit(c)
                 break
 
-            # checks for the /clients command
-            elif msg == f"{name} : /clients":
-                c.send(listclients().encode(ENC))
-            
             # prints and broadcasts the message
             else:
                 print(msg)
@@ -132,13 +137,16 @@ def start():
         name = c.recv(BUFF).decode(ENC)
         names.append(name)
 
+        # converts the names list to a string and sends it to the client
+        c.send(str(names).encode(ENC))
+
         # appends the client to the client list, and the address to the addresses list
         clients.append(c)
         addresses.append(addr)
 
         # indicates to the host and other clients that the client has connected
-        print(f"{name} JOINED")
-        broadcast(c, f"{name} JOINED")
+        print(f"{name} JOINED THE CHAT")
+        broadcast(c, f"[NEWNAME] {name}")
         c.send("[CONNECTED]".encode(ENC))
 
         # a new thread will be started that runs the run function to handle the client
@@ -151,5 +159,6 @@ th2.start()
 
 # starting the listen fuction to allow connections
 print(f"SERVER IS LISTENING ON {ADDR}")
+
 # running the start function
 start()
