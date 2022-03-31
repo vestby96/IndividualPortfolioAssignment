@@ -265,7 +265,7 @@ def rece():
                 # adds the name to the names list
                 names.append(msg[10:])
                 # prints the name
-                print(f"{msg[8:]} HAS JOINED THE CHAT")
+                print(f"{msg[10:]} HAS JOINED THE CHAT")
 
             # if a client disconnects
             elif msg.startswith("[DISCONNECTED]"):
